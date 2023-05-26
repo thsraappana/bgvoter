@@ -5,24 +5,27 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 import { signIn, signOut, useSession, getProviders } from "next-auth/react"
 
-import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import Logout from '@mui/icons-material/Logout';
+import Button from '@mui/material/Button'
+import Avatar from '@mui/material/Avatar'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import Divider from '@mui/material/Divider'
+import IconButton from '@mui/material/IconButton'
+import Tooltip from '@mui/material/Tooltip'
+import Logout from '@mui/icons-material/Logout'
+import MenuIcon from '@mui/icons-material/Menu'
 
 function Nav() {
   const { data: session } = useSession();
 
   const [ providers, setProviders ] = useState(null)
   const [anchorEl, setAnchorEl] = useState(null)
+  const [mobileAnchorEl, setMobileAnchorEl] = useState(null)
   const [loading, setLoading] = useState(true)
 
   const open = Boolean(anchorEl)
+  const mobileOpen = Boolean(mobileAnchorEl)
 
   useEffect(() => {
     (async () => {
@@ -30,34 +33,84 @@ function Nav() {
       setProviders(res);
       setLoading(false);
     })();
-  }, []);
+  }, [])
 
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-  };
+  }
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
+  }
+
+  const handleMobileClick = (event) => {
+    setMobileAnchorEl(event.currentTarget);
+  }
+  const handleMobileClose = () => {
+    setMobileAnchorEl(null);
+  }
 
   return (
     <nav className="flex justify-between w-full mb-16 pt-3 pr-5 pl-5">
-        <Link href="/" className="flex gap-2 flex-center">
+        <Link href="/" className="flex gap-2 flex-center z-10">
           <Image
             src="/assets/images/logo_transparent.png"
             alt="BGVoter Logo"
             width={150}
             height={150}
             className="object-contain"
+            priority={true}
           />
         </Link>
-
       <div className="flex justify-center flex-col">
-        <div>
-        {loading && <div>
+        <div className="flex items-center">
+        {/* Desktop Navigation */}
+          <div className="sm:flex gap-5 hidden">
+            <div>
+              <Link href="/about">
+                <div className="link">
+                  About
+                </div>
+              </Link>
+            </div>
+            <div>
+              <Link href="/rooms">
+                <div className="link">
+                  Browse Rooms
+                </div>
+              </Link>
+            </div>
+          </div>
+        {/* Mobile Navigation */}
+        <div className="sm:hidden flex relative">
+          <MenuIcon onClick={handleMobileClick} />
+
+          <Menu
+            id="basic-menu"
+            anchorEl={mobileAnchorEl}
+            open={mobileOpen}
+            onClose={handleMobileClose}
+            MenuListProps={{
+              'aria-labelledby': 'basic-button',
+            }}
+          >
+            <MenuItem onClick={handleMobileClose}>
+              <Link href="/about">
+                  About
+              </Link>
+            </MenuItem>
+            <MenuItem onClick={handleMobileClose}>
+              <Link href="/rooms">
+                  Browse Rooms
+              </Link>
+            </MenuItem>
+          </Menu>
+        </div>
+
+        {loading && <div className="ml-5">
           <Image
-            src='assets/icons/loader.svg'
+            src='/assets/icons/loader.svg'
             width={37}
             height={37}
             alt='loader'
@@ -76,13 +129,13 @@ function Nav() {
                 aria-expanded={open ? 'true' : undefined}
               >
                 <Avatar sx={{ width: 37, height: 37 }}>
-                  <Image
-                    src={session?.user.image}
-                    width={37}
-                    height={37}
-                    className="rounded-full"
-                    alt="profile"
-                  />
+                    <Image
+                      src={session?.user.image}
+                      width={37}
+                      height={37}
+                      className="rounded-full"
+                      alt="avatar"
+                    />
                 </Avatar>
               </IconButton>
             </Tooltip>
@@ -122,10 +175,11 @@ function Nav() {
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
             <MenuItem onClick={handleClose}>
-              <Avatar /> Profile
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-              <Avatar /> My account
+              <Link href="/profile">
+                <div className="flex items-center">
+                  <Avatar /> Profile
+                </div>
+              </Link>
             </MenuItem>
             <Divider />
             <MenuItem onClick={ () => { handleClose(); signOut(); }}>
@@ -140,7 +194,7 @@ function Nav() {
           <>
             {providers && 
               Object.values(providers).map((provider) => (
-                <Button key={provider.name} variant="outlined" color="secondary" onClick={() => signIn(provider.id)}>Log In</Button>
+                <Button style={{ marginLeft: 15 }} key={provider.name} variant="outlined" color="secondary" onClick={() => signIn(provider.id)}>Log In</Button>
             ))}
         </>}
         </div>

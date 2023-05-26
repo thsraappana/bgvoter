@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+.main {
+  width: 100vw;
+  min-height: 100vh;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
 .gradient {
     height: fit-content;
     width: 100%;
@@ -12,4 +21,38 @@
     width: 100%;
     height: 100%;
     opacity: 0.25;
+  }
+
+  .app {
+    @apply relative z-10 flex justify-center items-center flex-col max-w-7xl mx-auto sm:px-16 px-6;
+  }
+
+  .head_text {
+    @apply sm:mt-5 text-5xl font-extrabold leading-[1.15] text-black sm:text-6xl;
+  }
+  
+  .blue_gradient {
+    @apply bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent;
+  }
+
+  .purple_gradient {
+    @apply bg-gradient-to-r from-purple-400 to-purple-500 bg-clip-text text-transparent;
+  }
+
+  .desc {
+    @apply mt-5 text-lg text-gray-600 p-0 sm:pl-7 sm:pr-7 sm:text-xl;
+  }
+
+  .desc-2 {
+    @apply mt-5 text-lg text-gray-600 p-0 sm:text-xl;
+  }
+
+  .link {
+    color: #9c27b0;
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  .link:hover {
+    color: #611270;
   }
