@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { connectToDB } from "@utils/database";
 import { getServerSession } from "next-auth/next"
 import Room from "@models/room";
@@ -38,7 +39,7 @@ export const POST = async (req, res) => {
                 publicName,
                 desc,
                 code,
-                players: [userId]
+                players: [new mongoose.Types.ObjectId(userId)]
             })
     
             await newRoom.save();
@@ -51,6 +52,7 @@ export const POST = async (req, res) => {
         }
 
     } catch (error) {
+        console.log(error)
         return new Response("Failed to create a new room", {
             status: 500
         })

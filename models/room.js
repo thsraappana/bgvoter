@@ -20,12 +20,14 @@ const RoomSchema = new Schema({
     desc: {
         type: String,
     },
-    players: {
-        type: [String],
-    },
-    banned: {
-        type: [String],
-    },
+    players: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    banned: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
 });
 
 const Room = models.Room || model('Room', RoomSchema);

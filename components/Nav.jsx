@@ -16,6 +16,8 @@ import Tooltip from '@mui/material/Tooltip'
 import Logout from '@mui/icons-material/Logout'
 import MenuIcon from '@mui/icons-material/Menu'
 
+{/* TODO: add user email and name to profile in nav bar */}
+
 function Nav() {
   const { data: session } = useSession();
 
@@ -77,7 +79,7 @@ function Nav() {
             <div>
               <Link href="/rooms">
                 <div className="link">
-                  Browse Rooms
+                  My Rooms
                 </div>
               </Link>
             </div>
