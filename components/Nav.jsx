@@ -19,12 +19,11 @@ import MenuIcon from '@mui/icons-material/Menu'
 {/* TODO: add user email and name to profile in nav bar */}
 
 function Nav() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const [ providers, setProviders ] = useState(null)
   const [anchorEl, setAnchorEl] = useState(null)
   const [mobileAnchorEl, setMobileAnchorEl] = useState(null)
-  const [loading, setLoading] = useState(true)
 
   const open = Boolean(anchorEl)
   const mobileOpen = Boolean(mobileAnchorEl)
@@ -33,7 +32,6 @@ function Nav() {
     (async () => {
       const res = await getProviders();
       setProviders(res);
-      setLoading(false);
     })();
   }, [])
 
@@ -54,7 +52,7 @@ function Nav() {
   }
 
   return (
-    <nav className="flex justify-between w-full mb-16 pt-3 pr-5 pl-5">
+    <nav className="flex justify-between w-full mb-14 pt-3 pr-5 pl-5">
         <Link href="/" className="flex gap-2 flex-center z-10">
           <Image
             src="/assets/images/logo_transparent.png"
@@ -110,7 +108,7 @@ function Nav() {
           </Menu>
         </div>
 
-        {loading && <div className="ml-5">
+        {status === "loading" && <div className="ml-5">
           <Image
             src='/assets/icons/loader.svg'
             width={37}
@@ -119,7 +117,7 @@ function Nav() {
             className='object-contain'
           />
           </div>}
-        {!loading && session?.user && (
+        {status !== "loading" && session?.user && (
           <>
             <Tooltip title="Account settings">
               <IconButton
@@ -192,7 +190,7 @@ function Nav() {
             </MenuItem>
         </Menu>
       </>)}
-        {!loading && !session?.user &&
+        {status !== "loading" && !session?.user &&
           <>
             {providers && 
               Object.values(providers).map((provider) => (

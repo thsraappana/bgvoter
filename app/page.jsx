@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useSession } from "next-auth/react"
 
-import Button from '@mui/material/Button'
+import RoomCreateJoin from '@components/RoomCreateJoin'
 
 function Home() {
   const router = useRouter()
@@ -27,20 +27,7 @@ function Home() {
         <p className="desc text-center">
           Create custom game rooms, vote for the next game, and archive completed games for future reference. The ultimate platform for collaborative gaming decisions.
         </p>
-        <div className="flex justify-evenly mt-5 sm:mt-20 max-md:flex-col max-md:items-center">
-          <div>
-            {/* TODO: add alert to notify that user needs to login in order to create rooms */}
-            <Button
-              onClick={handleCreateRoomClick}
-              style={{ paddingRight: 50, paddingLeft: 50, paddingTop: 25, paddingBottom: 25, width: 300, borderWidth: 3 }}
-              variant="outlined" color="secondary">
-                Create Room
-            </Button>
-          </div>
-          <div className="max-md:mt-5">
-            <Button style={{ paddingRight: 50, paddingLeft: 50, paddingTop: 25, paddingBottom: 25, width: 300, borderWidth: 3 }} variant="outlined" color="secondary">Join Room</Button>
-          </div>
-        </div>
+        <RoomCreateJoin handleCreateRoomClick={handleCreateRoomClick} handleJoinRoomClick={() => {}} />
     </section>
   )
 }

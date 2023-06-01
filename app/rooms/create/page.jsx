@@ -61,7 +61,13 @@ const NewRoom = () => {
     }
 
     if (status === "loading") {
-        return <CircularProgress color="secondary" />
+        return (
+            <section>
+                <div>
+                    <CircularProgress color="secondary" />
+                </div>
+            </section>
+        )
     }
 
     return (
